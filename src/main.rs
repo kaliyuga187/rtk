@@ -726,6 +726,9 @@ enum Commands {
         #[command(subcommand)]
         command: HookCommands,
     },
+
+    /// Show what RTK can do — all supported commands and token-saving capabilities
+    What,
 }
 
 #[derive(Debug, Subcommand)]
@@ -2302,6 +2305,11 @@ fn run_cli() -> Result<i32> {
             core::utils::exit_code_from_status(&status, &cmd_name)
         }
 
+        Commands::What => {
+            print_what();
+            0
+        }
+
         Commands::Trust { list } => {
             hooks::trust::run_trust(list)?;
             0
@@ -2329,6 +2337,95 @@ fn run_cli() -> Result<i32> {
     };
 
     Ok(code)
+}
+
+/// Print a user-friendly overview of everything RTK can do.
+fn print_what() {
+    println!("rtk — Rust Token Killer  (60-90% token savings for LLM sessions)\n");
+
+    println!("FILESYSTEM");
+    println!("  rtk ls [args]          directory listing, token-optimized");
+    println!("  rtk tree [args]        directory tree, token-optimized");
+    println!("  rtk read <file>        file contents with intelligent filtering");
+    println!("  rtk find [args]        find results, deduplicated");
+    println!("  rtk grep [args]        grep / ripgrep, grouped matches");
+    println!("  rtk wc [args]          word count, compact");
+
+    println!("\nGIT / VCS");
+    println!("  rtk git status|log|diff|show|add|commit|push|pull|branch|fetch|stash|worktree");
+    println!("  rtk diff [args]        condensed diff output");
+    println!("  rtk gh [args]          GitHub CLI wrapper (pr, issue, …)");
+    println!("  rtk gt log|submit|sync|restack|create|branch");
+
+    println!("\nRUST");
+    println!("  rtk cargo build|test|clippy|check|install|nextest");
+
+    println!("\nJAVASCRIPT / TYPESCRIPT");
+    println!("  rtk npm [args]         npm with boilerplate stripped");
+    println!("  rtk pnpm list|outdated|install|typecheck");
+    println!("  rtk npx <cmd> [args]   smart routing to tsc / eslint / prisma / next / prettier");
+    println!("  rtk tsc [args]         TypeScript errors, grouped by file");
+    println!("  rtk lint [args]        ESLint, grouped by rule");
+    println!("  rtk prettier [args]    Prettier, compact output");
+    println!("  rtk next [args]        Next.js build / dev, strip noise");
+    println!("  rtk jest|vitest [args] test runner, compact summary");
+    println!("  rtk playwright [args]  E2E test output, compact");
+    println!("  rtk prisma generate|migrate dev|status|deploy|db push");
+
+    println!("\nPYTHON");
+    println!("  rtk ruff [args]        Ruff linter / formatter, compact");
+    println!("  rtk pytest [args]      pytest, compact summary");
+    println!("  rtk mypy [args]        mypy errors, grouped");
+    println!("  rtk pip [args]         pip / uv, compact");
+
+    println!("\nRUBY");
+    println!("  rtk rake [args]        Rake / Minitest, compact");
+    println!("  rtk rubocop [args]     RuboCop, compact");
+    println!("  rtk rspec [args]       RSpec, compact");
+
+    println!("\nGO");
+    println!("  rtk go test|build|vet");
+    println!("  rtk golangci-lint [args]");
+
+    println!("\n.NET");
+    println!("  rtk dotnet build|test|run|publish|format|restore");
+
+    println!("\nCLOUD / INFRA");
+    println!("  rtk docker ps|images|logs|compose ps|logs|build");
+    println!("  rtk kubectl pods|services|logs");
+    println!("  rtk curl [args]        auto-JSON detection + schema output");
+    println!("  rtk wget [args]        wget, compact");
+    println!("  rtk aws [args]         AWS CLI, strip verbose headers");
+    println!("  rtk psql [args]        PostgreSQL, tabular output");
+
+    println!("\nSYSTEM / UTILS");
+    println!("  rtk json [args]        pretty JSON / jq wrapper");
+    println!("  rtk env [args]         environment variables, filtered");
+    println!("  rtk log [args]         log file reader, deduplicated");
+    println!("  rtk summary [args]     text summariser");
+    println!("  rtk format [args]      generic code formatter");
+    println!("  rtk smart [args]       smart output filter");
+    println!("  rtk deps [args]        dependency graph");
+    println!("  rtk pipe [--filter F]  Unix pipe mode — filter stdin");
+    println!("  rtk proxy <cmd>        passthrough with usage tracking");
+    println!("  rtk run -c '<cmd>'     raw shell execution, no filtering");
+
+    println!("\nANALYTICS");
+    println!("  rtk gain               token-saving statistics");
+    println!("  rtk gain --graph       ASCII chart (30 days)");
+    println!("  rtk discover           find missed savings in history");
+    println!("  rtk session            adoption across sessions");
+    println!("  rtk learn              learn CLI corrections from history");
+
+    println!("\nCONFIGURATION / SETUP");
+    println!("  rtk init               install hook into Claude Code / Cursor / …");
+    println!("  rtk config             show / create config file");
+    println!("  rtk telemetry status|enable|disable|forget");
+    println!("  rtk verify             check hook integrity + inline filter tests");
+    println!("  rtk rewrite <cmd>      show how a command would be rewritten");
+    println!("  rtk hook check <cmd>   dry-run the hook rewrite engine");
+
+    println!("\nRun `rtk --help` for the full command reference.");
 }
 
 /// Returns true for commands that are invoked via the hook pipeline
