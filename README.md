@@ -35,6 +35,10 @@
 
 rtk filters and compresses command outputs before they reach your LLM context. Single Rust binary, 100+ supported commands, <10ms overhead.
 
+## What is this?
+
+`rtk` ("Rust Token Killer") is a CLI proxy that rewrites common development commands and returns compact, structured output so AI coding agents use far fewer tokens.
+
 ## Token Savings (30-min Claude Code Session)
 
 | Operation | Frequency | Standard | rtk | Savings |
